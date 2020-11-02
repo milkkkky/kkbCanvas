@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #canvas{
+            background: #553344;
+        }
+    </style>
+</head>
+<body>
+    <!-- 
+        建立纹理方式
+        pattern = context.createPattern(image,"repeat|repeat-x|repeat-y|no-repeat")
+
+     -->
+    <!-- 默认width300，height 150 -->
+    <canvas id="canvas" width="700" height="400">
+
+    </canvas>
+    <script>
+        const canvas = document.querySelector("#canvas");
+        //2维画笔
+        const ctx = canvas.getContext('2d');
+        //3维
+        // const ctx = canvas.getContext('webgl');
+        const img = new Image();
+        img.src='./images/xxx.jpg';
+        img.onload=function(){
+            const pt = ctx.createPattern(image,'repeat');
+            ctx.fillStyle=pt;
+            ctx.fillRect(
+                0,0,
+                canvas.width,canvas.height
+            )
+        }
+        
+    </script>
+</body>
+</html>

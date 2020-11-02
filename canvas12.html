@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #canvas{
+            background: #553344;
+        }
+    </style>
+</head>
+<body>
+    <!-- 影响描边样式的因素
+    strokeStyle：描边的颜色
+    lineWidth:描边宽
+    lineCap:描边端点样式
+    lineJoin：描边拐角类型
+    miterLimit：拐角最大厚度
+    setLineDash(segments) 将描边设置为虚线，可以通过getLineDash()方式获取虚线样式
+    lineDashOffset：虚线的偏移量
+
+    -->
+    <canvas id="canvas" width="700" height="900">
+
+    </canvas>
+    <script>
+        // miterLimit 拐角限制
+        const canvas = document.querySelector("#canvas");
+        //2维画笔
+        const ctx = canvas.getContext('2d');
+        //3维
+        // const ctx = canvas.getContext('webgl');
+       ctx.strokeStyle='maroon';
+       ctx.lineWidth=4;
+
+        ctx.save();
+        ctx.setLineDash([60])
+       
+        ctx.beginPath();
+        ctx.moveTo(50,100);
+        ctx.lineTo(700,100);
+      
+        ctx.stroke();
+        ctx.restore();
+
+
+        ctx.save();
+        ctx.setLineDash([60])
+       
+        ctx.beginPath();
+        ctx.moveTo(50,150);
+        ctx.lineTo(700,150);
+      ctx.lineDashOffset=-90;
+        ctx.stroke();
+        ctx.restore();
+       
+    </script>
+</body>
+</html>

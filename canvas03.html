@@ -27,7 +27,7 @@
         矩形 rect(x,y,w,h)
       -->
     <!-- 默认width300，height 150 -->
-    <canvas id="canvas" width="700" height="400">
+    <canvas id="canvas" width="700" height="800">
 
     </canvas>
     <script>
@@ -36,15 +36,70 @@
         const ctx = canvas.getContext('2d');
         //3维
         // const ctx = canvas.getContext('webgl');
-        //红色的填充
-        ctx.fillStyle="red";
-        ctx.fillRect(
-            100,50,
-            400,200
-        )
-        //canvas尺寸不能过大，尽量控制在4000以内
+       /** ctx.beginPath();
+        ctx.moveTo(50,50);
+        ctx.lineTo(400,50);
+        ctx.lineTo(400,200);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.fill();**/
+      
         //
-        
+       /** ctx.beginPath();
+        ctx.arc(
+            300,300,
+            200,
+            0,Math.PI*3/2
+        )
+        ctx.moveTo(300+200,500);
+        ctx.arc(
+            300,500,
+            200,
+            0,Math.PI*3/2
+        )
+        // ctx.closePath();
+        ctx.stroke();**/
+        // ctx.fill();
+
+    //     ctx.beginPath();
+    //    ctx.moveTo(50,50);
+    //    ctx.lineTo(400,50);
+    //    ctx.lineTo(400,250);
+    //    ctx.stroke();
+
+    //    ctx.beginPath();
+    //    ctx.moveTo(50,50);
+    //    ctx.arcTo(
+    //        400,50,
+    //        400,250,
+    //        100
+    //    );
+    //    ctx.stroke()
+
+    //二次
+        // ctx.beginPath();
+        // ctx.moveTo(50,50);
+        // ctx.quadraticCurveTo(
+        //     400,50,
+        //     400,250
+        // );
+       
+       //三次
+        // ctx.beginPath();
+        // ctx.moveTo(50,50);
+        // ctx.quadraticCurveTo(
+        //     400,50,
+        //     400,250,
+        //     600,250
+        // );
+        // ctx.stroke();
+
+        ctx.beginPath();
+        ctx.rect(
+           100,50,
+           400,200
+       )
+        ctx.stroke();
     </script>
 </body>
 </html>

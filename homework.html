@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #canvas{
+            background: #553344;
+        }
+    </style>
+</head>
+<body>
+    <!-- 暗号：正弦 -->
+    <!-- 默认width300，height 150 -->
+    <canvas id="canvas" width="700" height="400">
+
+    </canvas>
+    <script>
+        const canvas = document.querySelector("#canvas");
+        canvas.width=window.innerWidth;
+        canvas.height = window.innerWidth;
+        //2维画笔
+        const ctx = canvas.getContext('2d');
+        //3维
+        // const ctx = canvas.getContext('webgl');
+
+        ctx.translate(200,200)
+        // ctx.scale(-1,1)
+        // ctx.rotate(Math.PI/24)
+        //红色的填充
+        ctx.fillStyle="red";
+        ctx.lineWidth=40;
+        // ctx.lineStyle=40;
+        ctx.fillRect(
+           50,250,
+           400,200
+        )
+        ctx.strokeRect(
+           50,250,
+           400,200
+        )
+        ctx.clearRect(
+            50,300,
+            400,60
+        );
+        ctx.beginPath();
+        //嘴巴quadraticCurveTo
+        ctx.moveTo(150,400)
+        ctx.moveTo(150,400)
+        ctx.lineWidth=20;
+        ctx.lineTo(350,400)
+        ctx.quadraticCurveTo(
+            150,300,
+            250,300
+        )
+        ctx.stroke()
+        //眼睛
+        ctx.beginPath();
+        ctx.fillStyle = 'blue'
+        ctx.arc(
+            150,330,
+            20,
+            0,Math.PI*2
+        )
+        ctx.moveTo(350-20,340)
+        ctx.arc(
+            350,340,
+            20,
+           Math.PI,0
+        )
+        ctx.fill()
+      
+        // ctx.stroke()
+        //天线
+        ctx.beginPath()
+      
+        ctx.moveTo(50,50)
+        ctx.bezierCurveTo(
+            150,50,
+            150,250,
+            250,250
+        )
+        ctx.moveTo(450,50)
+        ctx.bezierCurveTo(
+            350,50,
+            350,250,
+            250,250
+        )
+        ctx.stroke()
+    </script>
+</body>
+</html>
