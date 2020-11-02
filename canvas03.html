@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #canvas{
+            background: #553344;
+        }
+    </style>
+</head>
+<body>
+    <!-- 
+        开始建立路径：beginPath()
+        向路径集合中添加子路径[
+        moveTo(x,y);形状；closePath()可选
+        ]
+        显示路径：填充fill(),描边stoke()
+     -->
+     <!-- 
+        子路径形状：
+        直线：lineTo（x,y),
+        圆弧：arc(x,y,r,开始弧度，结束弧度，方向)
+        二次贝塞尔曲线：quadraticCurveTo(cpx1,cpy1,x,y)
+        三次贝塞尔曲线：bezierCurveTo(cpx1,cpy1,cpx2,cpy2,x,y)
+        矩形 rect(x,y,w,h)
+      -->
+    <!-- 默认width300，height 150 -->
+    <canvas id="canvas" width="700" height="400">
+
+    </canvas>
+    <script>
+        const canvas = document.querySelector("#canvas");
+        //2维画笔
+        const ctx = canvas.getContext('2d');
+        //3维
+        // const ctx = canvas.getContext('webgl');
+        //红色的填充
+        ctx.fillStyle="red";
+        ctx.fillRect(
+            100,50,
+            400,200
+        )
+        //canvas尺寸不能过大，尽量控制在4000以内
+        //
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #canvas{
+            background: #553344;
+        }
+    </style>
+</head>
+<body>
+    <!-- 默认width300，height 150 -->
+    <canvas id="canvas" width="700" height="400">
+
+    </canvas>
+    <script>
+        const canvas = document.querySelector("#canvas");
+        //2维画笔
+        const ctx = canvas.getContext('2d');
+        //3维
+        // const ctx = canvas.getContext('webgl');
+        //红色的填充
+        ctx.fillStyle="red";
+        ctx.fillRect(
+            100,50,
+            400,200
+        )
+        //canvas尺寸不能过大，尽量控制在4000以内
+        //
+        
+    </script>
+</body>
+</html>
