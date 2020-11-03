@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>02-03_05 曲线路径-优雅的绘制三次贝塞尔</title>
+    <style>
+        html, body {margin: 0;height: 100%;}
+        #rec {width: 100%;height: 100%;}
+        #canvas{}
+    </style>
+</head>
+<body>
+<div id="rec">
+    <canvas id="canvas"></canvas>
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/dat-gui/0.7.7/dat.gui.js"></script>
+<script type="text/javascript">
+    const rec=document.getElementById('rec');
+    const canvas=document.getElementById('canvas');
+    let recW=rec.clientWidth;
+    let recH=rec.clientHeight;
+    canvas.width=recW;
+    canvas.height=recH;
+    const ctx=canvas.getContext('2d');
+
+
+    class Vector2{
+        constructor(x=0,y=0){
+            this.x=x;
+            this.y=y;
+        }
+        //获取长度
+        length() {
+            return Math.sqrt( this.x * this.x + this.y * this.y );
+        }
+        //获取相对于x轴正方向的弧度
+        angle(){
+            let angle = Math.atan2( this.y, this.x );
+            if ( angle < 0 ) angle += 2 * Math.PI;
+            return angle;
+        }
+        //向量归一
+        normalize(){
+            this.setLength(1);
+            return this;
+        }
+        //设置向量长度
+        setLength(n=1){
+            const scalar=n/this.length();
+            this.x *= scalar;
+            this.y *= scalar;
+            return this;
+        }
+        //扩展
+        expand(dist){
+            this.setLength(this.length()+dist);
+            return this;
+        }
+        //根据线段，设置位置
+        getPosByLine(v1,v2,dist){
+            const oldDist=v1.distanceTo(v2);
+            const a=v2.clone().sub(v1).normalize();
+            return a.setLength(oldDist+dist).add(v1);
+        }
+        //取反，坐标效果为原点对称
+        negate(){
+            this.x = - this.x;
+            this.y = - this.y;
+            return this;
+        }
+        //减法
+        sub(v){
+            this.x -= v.x;
+            this.y -= v.y;
+            return this;
+        }
+        //加法
+        add(v){
+            this.x += v.x;
+            this.y += v.y;
+            return this;
+        }
+        //距离
+        distanceTo(v){
+            const [dx,dy] = [this.x - v.x, this.y - v.y];
+            return Math.sqrt(dx * dx + dy * dy);
+        }
+        //围绕某一点旋转
+        rotateAround(center, angle){
+            const c = Math.cos( angle ), s = Math.sin( angle );
+            const x = this.x - center.x;
+            const y = this.y - center.y;
+            this.x = x * c - y * s + center.x;
+            this.y = x * s + y * c + center.y;
+            return this;
+        }
+        //基于原点旋转
+        rotate(angle){
+            const c = Math.cos( angle ), s = Math.sin( angle );
+            const {x,y}=this;
+            this.x = x * c - y * s;
+            this.y = x * s + y * c;
+            return this;
+        }
+        //设置差值
+        lerp(v, alpha){
+            this.x += ( v.x - this.x ) * alpha;
+            this.y += ( v.y - this.y ) * alpha;
+            return this;
+        }
+        //获取和另一个点相连后的法线
+        getNormal(v){
+            return v.clone().sub(this).normalize();
+        }
+        //向量克隆
+        clone(){
+            return new Vector2(this.x,this.y);
+        }
+        //向量拷贝
+        copy(v){
+            this.x = v.x;
+            this.y = v.y;
+            return this;
+        }
+    }
+
+
+    class Bezier3{
+        constructor(v1,v2,v3,handleLen=0.25,dir=null){
+            /*三个图形点*/
+            //首点
+            this.v1=v1;
+            //中间的点
+            this.v2=v2;
+            //末点
+            this.v3=v3;
+
+            /*两个控制点*/
+            this.h1=new Vector2();
+            this.h2=new Vector2();
+
+            //手柄长度
+            this.handleLen=handleLen;
+            //手柄弧度
+            this.handleDir=dir;
+
+            //更新控制点
+            this.updateHandle();
+        }
+        //更新控制点
+        updateHandle(){
+            const {v1,v2,v3,h1,h2,handleLen,handleDir}=this;
+            //获取首末点点距离
+            const dist=v1.distanceTo(v3);
+            //手柄长度，两个手柄等长
+            const len=dist*handleLen;
+            //首点归零，末点随动，取单位向量
+            let v0;
+            if(handleDir===null){
+                v0=v3.clone().sub(v1).normalize();
+                this.handleDir=v3.angle();
+                //第二个手柄的归零处点位
+                h2.copy(v0.setLength(len));
+                //第一手柄是第二个手柄的原点对称
+                h1.copy(h2.clone().negate());
+                //两个手柄位移到实际位
+                h1.add(v2);
+                h2.add(v2);
+            }else{
+                h2.x=v2.x+len;
+                h2.y=v2.y;
+                h2.rotateAround(v2,handleDir);
+                h1.x=v2.x-len;
+                h1.y=v2.y;
+                h1.rotateAround(v2,handleDir);
+            }
+        }
+        //旋转手柄
+        rotateHandle(rad){
+            this.h1.rotateAround(this.v2,rad);
+            this.h2.rotateAround(this.v2,rad);
+        }
+
+        draw(ctx){
+            const {v1,v2,v3,h1,h2}=this;
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(v1.x,v1.y);
+            ctx.bezierCurveTo(h1.x,h1.y,h2.x,h2.y,v3.x,v3.y);
+            ctx.stroke();
+            ctx.restore();
+        }
+    }
+
+    class Helper{
+        constructor(vectors){
+            this.vectors=vectors;
+        }
+        act(...rest){
+            this.vectors.forEach((ele)=>{
+                ele.act = rest.includes(ele);
+            })
+        }
+        draw(ctx){
+            //路径
+            ctx.save();
+            ctx.beginPath();
+            ctx.strokeStyle='#999';
+            ctx.setLineDash([8, 8]);
+            this.vectors.forEach((ele,ind)=>{
+                if (ind===0){
+                    ctx.moveTo(ele.x,ele.y);
+                }else{
+                    ctx.lineTo(ele.x,ele.y);
+                }
+            });
+            ctx.stroke();
+            ctx.restore();
+
+            //点，文字
+            const [v1,h1,v2,h2,v3]=this.vectors;
+            const offsetDist=45;
+            const tv1=new Vector2().getPosByLine(v3,v1,offsetDist);
+            const th1=new Vector2().getPosByLine(h2,h1,offsetDist);
+            //获取控制轴的法线
+            const tv2=h1.clone().sub(h2).rotate(Math.PI/2).setLength(offsetDist).add(v2);
+            const th2=new Vector2().getPosByLine(h1,h2,offsetDist);
+            const tv3=new Vector2().getPosByLine(v1,v3,offsetDist);
+            const ts=[tv1,th1,tv2,th2,tv3];
+            this.vectors.forEach((ele,ind)=>{
+                let fillStyle=ele.act?'red':'#666';
+                ctx.save();
+                //绘制点
+                ctx.fillStyle=fillStyle;
+                ctx.fillRect(ele.x-3,ele.y-3,6,6);
+                ctx.restore();
+                //绘制文字
+                const text=`x:${parseInt(ele.x)}, y:${parseInt(ele.y)}`;
+                const {x,y}=ts[ind];
+                ctx.save();
+                ctx.textAlign="center";
+                ctx.textBaseline="middle";
+                ctx.font="14px Arial";
+                ctx.fillText(text,x,y);
+                ctx.restore();
+            });
+        }
+    }
+
+    let bezier;
+    let helper;
+    {
+        //bezier 路径
+        const v1=new Vector2(200,400);
+        const v2=new Vector2(450,300);
+        const v3=new Vector2(700,200);
+        bezier=new Bezier3(v1,v2,v3,0.25,-Math.PI/3);
+        bezier.draw(ctx);
+
+        //bezier 辅助线
+        const vectors=[v1,bezier.h1,v2,bezier.h2,v3];
+        helper=new Helper(vectors);
+        helper.draw(ctx);
+    }
+    {
+        const gui=new dat.GUI();
+        const {v2,v1,v3,handleDir,handleLen,h1,h2}=bezier;
+        const obj={
+            v2x:v2.x,
+            v2y:v2.y,
+            handleDir,
+            handleLen,
+            v1x:v1.x,
+            v1y:v1.y,
+            v3x:v3.x,
+            v3y:v3.y,
+
+        };
+
+        gui.add(obj,'v1x',0,recW).onChange((val)=>{
+            v1.x=val;
+            helper.act(v1);
+            render();
+        });
+        gui.add(obj,'v1y',0,recH).onChange((val)=>{
+            v1.y=val;
+            helper.act(v1);
+            render();
+        });
+        gui.add(obj,'v2x',0,recW).onChange((val)=>{
+            const dist=val-v2.x;
+            h1.x+=dist;
+            h2.x+=dist;
+            v2.x=val;
+            helper.act(v2);
+            render();
+        });
+        gui.add(obj,'v2y',0,recH).onChange((val)=>{
+            const dist=val-v2.y;
+            h1.y+=dist;
+            h2.y+=dist;
+            v2.y=val;
+            helper.act(v2);
+            render();
+        });
+        gui.add(obj,'v3x',0,recW).onChange((val)=>{
+            v3.x=val;
+            helper.act(v3);
+            render();
+        });
+        gui.add(obj,'v3y',0,recH).onChange((val)=>{
+            v3.y=val;
+            helper.act(v3);
+            render();
+        });
+        gui.add(obj,'handleDir',-Math.PI*2,Math.PI*2,0.01).onChange((val)=>{
+            bezier.handleDir=val;
+            bezier.updateHandle();
+            helper.act(v2);
+            render();
+        });
+        gui.add(obj,'handleLen',0,1).onChange((val)=>{
+            bezier.handleLen=val;
+            bezier.updateHandle();
+            helper.act(h1,h2);
+            render();
+        });
+        function render() {
+            ctx.clearRect(0,0,recW,recH);
+            bezier.draw(ctx);
+            helper.draw(ctx);
+        }
+    }
+
+</script>
+</body>
+</html>

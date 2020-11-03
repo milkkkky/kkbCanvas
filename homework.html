@@ -45,15 +45,13 @@
             400,60
         );
         ctx.beginPath();
-        //嘴巴quadraticCurveTo
-        ctx.moveTo(150,400)
-        ctx.moveTo(150,400)
-        ctx.lineWidth=20;
-        ctx.lineTo(350,400)
-        ctx.quadraticCurveTo(
-            150,300,
-            250,300
-        )
+        //嘴巴
+        // ctx.moveTo(150,400);
+        ctx.lineWidth=10;
+        ctx.arc(
+            250,370,
+            50,Math.PI*1/12,Math.PI*11/12
+        );
         ctx.stroke()
         //眼睛
         ctx.beginPath();
@@ -74,7 +72,8 @@
         // ctx.stroke()
         //天线
         ctx.beginPath()
-      
+        ctx.lineWidth=30;
+        ctx.setLineDash([30]);
         ctx.moveTo(50,50)
         ctx.bezierCurveTo(
             150,50,
