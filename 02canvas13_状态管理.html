@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+         #canvas{
+            background: lightgray;
+        }
+    </style>
+</head>
+<body>
+  <!-- 
+     保存当前状态：save()
+     恢复上一次保存的状态：restore()
+
+     状态嵌套
+   -->
+    <canvas id="canvas"></canvas>
+    <script>
+        const canvas = document.querySelector("#canvas");
+        canvas.width=window.innerWidth;
+        canvas.height = window.innerWidth;
+        //2维画笔
+        const ctx = canvas.getContext('2d');
+
+        ctx.save();
+
+        ctx.fillStyle='green';
+        ctx.fillRect(50,50,400,200)
+        ctx.restore()
+        ctx.fillRect(50,350,400,200)
+    </script>
+</body>
+</html>

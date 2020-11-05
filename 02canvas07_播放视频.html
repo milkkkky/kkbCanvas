@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+         /* #canvas{
+            background: lightgray;
+        } */
+    </style>
+</head>
+<body>
+    <video id="vid" controls autoplay loop muted>
+        <source src="./images/ripples.mp4" type="video/mp4"> 
+    </video>
+    <canvas id="canvas"></canvas>
+    <script>
+        // 获取图像
+        const vid = document.querySelector("#vid");
+        // 字体样式ctx.font="blod 18px serif"
+        const canvas = document.querySelector("#canvas");
+        canvas.width=window.innerWidth;
+        canvas.height = window.innerWidth;
+        //2维画笔
+        const ctx = canvas.getContext('2d');
+
+        const interval = null;
+        vid.addEventListener('play',function(){
+            interval=setInterval(function(){
+                ctx.drawImage(vid,0,0)
+           },40)
+          
+       })
+       vid.addEventListener('pause',function(){
+           clearInterval(interval)
+       })
+
+     
+    </script>
+</body>
+</html>

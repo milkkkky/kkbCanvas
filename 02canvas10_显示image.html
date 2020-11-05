@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+         #canvas{
+            background: lightgray;
+        }
+    </style>
+</head>
+<body>
+  <!-- 
+     putImageData(ImageData,dx,dy,x,y,w,h)
+   -->
+    <canvas id="canvas"></canvas>
+    <script>
+        const canvas = document.querySelector("#canvas");
+        canvas.width=window.innerWidth;
+        canvas.height = window.innerWidth;
+        //2维画笔
+        const ctx = canvas.getContext('2d');
+
+        const img = new Image();
+        img.src="./images/dog.jpg";
+        img.onload = function(){
+            // 绘图+位移 
+            const {width,height} = img;
+            ctx.drawImage(img,0,0);
+
+            const imgData = ctx.getImageData(0,0,width,height);
+            ctx.putImageData(
+                imgData,
+                0,height,
+                50,50,200,200
+            )
+          
+        }
+    </script>
+</body>
+</html>

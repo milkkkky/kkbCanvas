@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+         #canvas{
+            background: lightgray;
+        }
+    </style>
+</head>
+<body>
+  <!-- 
+     三个特性 
+     移动 translate(x,y)
+     旋转 rotate(angle)
+     缩放 scale(x,y)
+   -->
+    <canvas id="canvas"></canvas>
+    <script>
+        const canvas = document.querySelector("#canvas");
+        canvas.width=window.innerWidth;
+        canvas.height = window.innerWidth;
+        //2维画笔
+        const ctx = canvas.getContext('2d');
+
+    //    色系
+        const [redA,redB,yellow] = ['#db655c','#d63d46','#9f8d7d'];
+
+    //圆的弧度
+        const c = Math.PI*2;
+
+    //canvas宽高
+        const {width,height} = canvas;
+       
+        draw();
+
+        function draw(){
+            //保存状态
+
+            //整体偏移
+
+            //整体旋转
+
+            //表框--圆弧路径
+
+            // 内框-145,20
+            // 外框 155,9
+        }
+       
+    </script>
+</body>
+</html>

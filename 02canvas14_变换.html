@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+         #canvas{
+            background: lightgray;
+        }
+    </style>
+</head>
+<body>
+  <!-- 
+     三个特性 
+     移动 translate(x,y)
+     旋转 rotate(angle)
+     缩放 scale(x,y)
+   -->
+    <canvas id="canvas"></canvas>
+    <script>
+        const canvas = document.querySelector("#canvas");
+        canvas.width=window.innerWidth;
+        canvas.height = window.innerWidth;
+        //2维画笔
+        const ctx = canvas.getContext('2d');
+
+        ctx.fillStyle='green';
+
+        ctx.translate(100,100)
+        ctx.rotate(Math.PI/24)
+        ctx.scale(0.5,0.5)
+        ctx.fillRect(50,50,400,200);
+       
+       
+    </script>
+</body>
+</html>

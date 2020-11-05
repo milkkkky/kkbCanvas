@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+         #canvas{
+            background: lightgray;
+        }
+    </style>
+</head>
+<body>
+  <!-- 
+      怎么拿到ImageData()
+      1、直接建立ImageData()对象
+      new  ImageData()
+        - new  ImageData(width,height)
+        - new  ImageData(Uint8ClampedArray,width,height)
+      2、ctx.createImageData()
+        - ctx.createImageData(width,height)
+        - ctx.createImageData(ImageData)
+    获取canvas的ImageData()对象
+        ctx.getImage(x,y,width,height)
+   -->
+    <canvas id="canvas"></canvas>
+    <script>
+      
+        // 字体样式ctx.font="blod 18px serif"
+        const canvas = document.querySelector("#canvas");
+        canvas.width=window.innerWidth;
+        canvas.height = window.innerWidth;
+        //2维画笔
+        const ctx = canvas.getContext('2d');
+
+       const [width,height] = [400,200];
+       const imgDt = new ImageData(width,height);
+       console.log(imgDt)
+       imgDt.data.forEach((ele,ind)=>{
+            imgDt.data[ind]=255;
+       })
+       ctx.putImageData(imgDt,0,0);
+// 获取像素
+       const imgDt2 = ctx.getImageData(
+           0,0,1,1
+       )
+       console.log(imgDt2)
+    </script>
+</body>
+</html>
