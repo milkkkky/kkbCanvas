@@ -34,21 +34,183 @@
     //canvas宽高
         const {width,height} = canvas;
        
-        draw();
+        // draw();
+
+        // 
+        !(function render(){
+                ctx.clearRect(0,0,width,height)
+                draw()
+                requestAnimationFrame(render)
+        })()
 
         function draw(){
             //保存状态
-
+            ctx.save();
             //整体偏移
-
+            ctx.translate(width/2,height/2)
             //整体旋转
-
+            ctx.rotate(-Math.PI/2)
             //表框--圆弧路径
 
             // 内框-145,20
             // 外框 155,9
+            ctx.save();
+            ctx.beginPath()
+            ctx.arc(
+                0,0,
+                145,
+                0,c
+            )
+            ctx.strokeStyle=redA;
+            ctx.lineWidth = 20;
+            ctx.stroke()
+
+
+            ctx.beginPath()
+            ctx.arc(
+                0,0,
+                155,
+                0,c
+            )
+            ctx.strokeStyle=redB;
+            ctx.lineWidth = 9;
+            ctx.stroke()
+            ctx.restore();
+
+            ctx.save()
+            ctx.beginPath();
+            ctx.lineWidth = 15;
+            ctx.strokeStyle=redB;
+
+
+            for(let i=0;i<4;i++){
+                ctx.moveTo(90,0)
+                ctx.lineTo(120,0)
+                ctx.rotate(c/4)
+            }
+           
+            ctx.stroke()
+            ctx.restore();
+
+            // 5分钟一个
+            ctx.save()
+            ctx.beginPath();
+            ctx.lineWidth = 6;
+            ctx.strokeStyle=yellow;
+
+
+            for(let i=0;i<12;i++){
+                if(i%3){
+                    ctx.moveTo(90,0)
+                    ctx.lineTo(120,0)
+                   
+                }
+                ctx.rotate(c/12)
+               
+            }
+           
+            ctx.stroke()
+            ctx.restore();
+
+//1分钟
+             ctx.save()
+            ctx.beginPath();
+            ctx.lineWidth = 3;
+            ctx.strokeStyle=yellow;
+
+
+            for(let i=0;i<60;i++){
+                if(i%5){
+                    ctx.moveTo(118,0)
+                    ctx.lineTo(120,0)
+                   
+                }
+                ctx.rotate(c/60)
+               
+            }
+            ctx.stroke()
+            ctx.restore();
+
+            //指针
+            const {rh,rm,rs} = getRadian()
+            // ctx.restore();
+            ctx.save()
+            ctx.beginPath();
+            ctx.lineWidth = 9;
+            ctx.strokeStyle=yellow;
+            ctx.rotate(rh)
+            ctx.moveTo(-20,0)
+            ctx.lineTo(65,0)
+          
+            ctx.stroke()
+            ctx.restore();
+//分针
+        
+            // ctx.restore();
+            ctx.save()
+            ctx.beginPath();
+            ctx.lineWidth = 4;
+            ctx.strokeStyle=redB;
+            ctx.rotate(rm)
+            ctx.moveTo(-20,0)
+            ctx.lineTo(80,0)
+          
+            ctx.stroke()
+            ctx.restore();
+
+//秒针
+            ctx.save()
+            ctx.beginPath();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle=redB;
+            ctx.rotate(rs)
+            ctx.moveTo(-30,0)
+            ctx.lineTo(88,0)
+          
+            ctx.stroke()
+            ctx.restore();
+
+
+            // 圆弧
+            ctx.save()
+            ctx.fillStyle=redB
+            ctx.beginPath();
+          ctx.arc(0,0,10,0,c)
+          ctx.fill()
+          
+          
+          
+            ctx.restore();
+
+
+            ctx.restore();
+
+
+
         }
-       
+        function getRadian(){
+        /*获取当前时间的时分秒*/
+        //获取当前时间
+            const date=new Date();
+        //当前小时 getHours
+            let h=date.getHours();
+            if(h>12){h-=12}
+        //当前分钟 getMinutes
+            let m=date.getMinutes();
+        //当前秒 getSeconds
+            let s=date.getSeconds();
+
+        /*基于时间比，计算指针在圆周中的弧度*/
+        //时针旋转弧度
+            const rh=c*h/12+c*m/12/60+c*s/12/60/60;
+        //分针旋转弧度
+        const rm=c*m/60+c*s/60/60;
+        //秒针旋转弧度
+        const rs=c*s/60;
+
+        //返回三个弧度
+        return {rh,rm,rs};
+    }
     </script>
 </body>
 </html>
