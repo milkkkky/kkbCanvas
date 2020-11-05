@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+       填充文字           fillText(text,x,y,maxWidth)
+       描边文字           strokeText(text,x,y,maxWidth)
+       获取文字宽度的方法  measureText(text)
+     -->
+    <canvas id="canvas"></canvas>
+    <script>
+        // 字体样式ctx.font="blod 18px serif"
+
+        const canvas = document.querySelector("#canvas");
+        canvas.width=window.innerWidth;
+        canvas.height = window.innerWidth;
+        //2维画笔
+        const ctx = canvas.getContext('2d');
+
+        const text='好好学习';
+        ctx.font='100px Arial';
+        
+        ctx.lineWidth=3;
+        ctx.strokeStyle='red';
+        const {width} = ctx.measureText('好');
+        // ctx.fillText(text,100,300,1000);
+        //描边文字
+        ctx.strokeText('好',100,300);
+        ctx.strokeText('好',100+width,300);
+        ctx.strokeText('学习',100+2*width,300);
+        ctx.fillRect(100,300,10,10)
+    </script>
+</body>
+</html>

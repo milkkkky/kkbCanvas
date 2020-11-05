@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+        alphabetic  默认。标准字母基线对齐
+        top         上对齐
+        hanging     悬挂基线对齐
+        middle      垂直居中
+        ideographic 表意线对齐
+        bottom      下对齐
+     -->
+    <canvas id="canvas"></canvas>
+    <script>
+        // 字体样式ctx.font="blod 18px serif"
+
+        const canvas = document.querySelector("#canvas");
+        canvas.width=window.innerWidth;
+        canvas.height = window.innerWidth;
+        //2维画笔
+        const ctx = canvas.getContext('2d');
+
+        ctx.strokeStyle='#999';
+        ctx.setLineDash([8]);
+        ctx.moveTo(30,200);
+        ctx.lineTo(700,200);
+        ctx.stroke()
+
+        ctx.textBaseline='top';
+        ctx.font='24px Arial';
+        
+        ctx.textBaseline='top';
+        ctx.fillText('top',100,200);
+
+        ctx.textBaseline='middle';
+        ctx.fillText('middle',200,200);
+
+        ctx.textBaseline='bottom';
+        ctx.fillText('bottom',300,200);
+
+        ctx.textBaseline='alphabetic';
+        ctx.fillText('alphabetic',400,200);
+    </script>
+</body>
+</html>
