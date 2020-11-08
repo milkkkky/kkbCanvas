@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+        1、清理画布  ctx.clearRect(0,0,canvas.width,canvas.height)
+        2、保存canvas上下文状态：ctx.save()
+        3、绘制
+        4、恢复上下文状态：ctx.store()
+     -->
+    <script>
+        let [a,b] = [0,0];
+        setInterval(function (){
+            a++;
+        },10);
+        !(function render(){
+            b++;
+            requestAnimationFrame(render);
+        })();
+
+        //监听标签的可见性  visibilitychange
+        //判断可见性的判断方法：document.visibilityState==='visible'
+        window.addEventListener('visibilitychange',function(){
+            console.log(document.visibilityState);
+            console.log('a',a);
+            console.log('b',b);
+            console.log("---------------------------");
+        })
+    </script>
+</body>
+</html>
