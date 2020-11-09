@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        const canvas = document.querySelector("#canvas");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const ctx =  canvas.getContext('2d');
+
+        /**
+         * 
+          路径剪裁的步骤
+        1、定义路径
+        2、ctx.clip()
+        3、绘图
+         * 
+         * **/
+        ctx.save()
+        ctx.beginPath();
+        ctx.arc(300,300,100,0,Math.PI*2)
+        ctx.stroke();
+        ctx.clip()
+        ctx.fillRect(300,300,100,100);
+        ctx.restore()
+    </script>
+</body>
+</html>
