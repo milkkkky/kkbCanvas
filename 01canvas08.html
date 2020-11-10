@@ -27,9 +27,9 @@
         //3维
         // const ctx = canvas.getContext('webgl');
         const img = new Image();
-        img.src='./images/xxx.jpg';
+        img.src='./images/background.jpg';
         img.onload=function(){
-            const pt = ctx.createPattern(image,'repeat');
+            const pt = ctx.createPattern(img,'repeat');
             ctx.fillStyle=pt;
             ctx.fillRect(
                 0,0,

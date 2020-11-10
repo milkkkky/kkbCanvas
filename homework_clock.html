@@ -27,6 +27,8 @@
 
     //    色系
         const [redA,redB,yellow] = ['#db655c','#d63d46','#9f8d7d'];
+        const img=new Image();
+        img.src='./images/background.png';
 
     //圆的弧度
         const c = Math.PI*2;
@@ -49,11 +51,13 @@
             //整体偏移
             ctx.translate(width/2,height/2)
             //整体旋转
+            const pat=ctx.createPattern(img,'repeat');
             ctx.rotate(-Math.PI/2)
             //表框--圆弧路径
 
             // 内框-145,20
             // 外框 155,9
+          
             ctx.save();
             ctx.beginPath()
             ctx.arc(
@@ -62,8 +66,13 @@
                 0,c
             )
             ctx.strokeStyle=redA;
+            ctx.fillStyle=pat;
             ctx.lineWidth = 20;
-            ctx.stroke();
+            ctx.stroke()
+            ctx.translate(-width*3/2,-height*3/2)
+            ctx.rotate(Math.PI/2)
+            ctx.fill();
+
             ctx.beginPath()
             ctx.arc(
                 0,0,
@@ -173,15 +182,44 @@
             ctx.save()
             ctx.fillStyle=redB
             ctx.beginPath();
-          ctx.arc(0,0,10,0,c)
-          ctx.fill()
-          
-          
-          
+            ctx.arc(0,0,10,0,c)
+            ctx.fill()                             
             ctx.restore();
 
 
             ctx.restore();
+
+        //文字时间
+        ctx.save();
+
+
+        ctx.font='bold 150px Arial';
+        ctx.textAlign='center';
+        ctx.translate(width/2,50);
+
+        //投影
+        ctx.shadowColor='rgba(0,0,0,0.6)';
+        ctx.shadowOffsetY=2;
+        ctx.shadowBlur=4;
+
+        //实体文字
+        ctx.fillStyle='#a76921';
+        ctx.fillText(time,0,150);
+
+        //实体描边文字
+        ctx.strokeStyle='#f0d5ac';
+        ctx.lineWidth=6;
+        ctx.strokeText(time,0,150);
+
+        //虚线描边
+        ctx.strokeStyle='#333';
+        ctx.lineWidth=1;
+        ctx.setLineDash([5,3]);
+        ctx.strokeText(time,0,150);
+        ctx.font='bold 200px arial' ;
+
+
+        ctx.restore();
 
 
 
@@ -205,9 +243,12 @@
         const rm=c*m/60+c*s/60/60;
         //秒针旋转弧度
         const rs=c*s/60;
-
+        if(h<10){h='0'+h}
+        if(m<10){m='0'+m}
+        if(s<10){s='0'+s}
+        const time=h+':'+m+':'+s;
         //返回三个弧度
-        return {rh,rm,rs};
+        return {rh,rm,rs,time};
     }
     </script>
 </body>
