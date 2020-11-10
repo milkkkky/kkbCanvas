@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            margin: 0;
+            overflow: hidden;
+        }
+        #canvas{
+            margin: 100px;
+            background-image: url("images/ggl-back.png");
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        const canvas = document.querySelector("#canvas");
+        // canvas.width = window.innerWidth;
+        // canvas.height = window.innerHeight;
+        const ctx =  canvas.getContext('2d');
+        const [width,height] = [395,188];
+         canvas.width = 385;
+        canvas.height = 188;
+
+        const img = new Image();
+        img.src="./images/ggl-mask.png";
+        img.onload = function (){
+            ctx.drawImage(img,0,0)
+        }
+
+        // 笔触对象
+        class Line{
+            constructor(ctx){
+                this.ctx = ctx;
+                // 判断是否正在绘图
+                this.drawing = false; 
+            }
+            moveTo(x,y){
+                const {ctx} = this;
+                this.drawing = true;
+                ctx.save();
+                ctx.lineWidth=30;
+                ctx.globalCompositeOperation='destination-out';
+                ctx.moveTo(x,y);
+            }
+            lineTo(x,y){
+               const {ctx} = this;
+               ctx.lineTo(x,y);
+               ctx.stroke();
+            }
+            restore(){
+                this.ctx.restore();
+                this.drawing = fasle;
+            }
+        }
+
+        // 实例化对象
+
+        const line = new Line(ctx);
+        // 鼠标按下
+        canvas.addEventListener('mousedown',function(event){
+            
+            if(event.buttons === 1){
+                const {x,y} = getMousePos(event);
+                line.moveTo(x,y);
+            }
+        })
+        // 鼠标移动
+        canvas.addEventListener('mousemove',function(event){
+           
+            if(event.buttons === 1&&line.drawing){
+                const {x,y} = getMousePos(event);
+                // 绘制下一个点
+                line.lineTo(x,y);
+            }
+        })
+         // 鼠标抬起
+         canvas.addEventListener('mouseup',function(event){
+            console.log("11111")
+            if(event.buttons === 1){
+               
+                line.restore();
+            }
+        })
+          //获取鼠标在canvas中的位置
+    function getMousePos(event){
+        //获取鼠标位置
+        const {clientX,clientY}=event;
+        //获取canvas 边界位置
+        const {top,left}=canvas.getBoundingClientRect();
+        //计算鼠标在canvas 中的位置
+        const x=clientX-left;
+        const y=clientY-top;
+        return {x,y};
+    }
+    </script>
+</body>
+</html>
