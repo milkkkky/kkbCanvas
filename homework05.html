@@ -76,40 +76,73 @@
     //极值
     let maxY=Infinity;
       //点击事件
-    canvas.addEventListener('mousedown',mousedownFn);
+    // document.addEventListener('mousedown',mousedownFn);
+    //移动
+    canvas.addEventListener('mousemove',mousemoveFn);
+    //鼠标抬起
+    // document.addEventListener('mouseup',mouseupFn);
 
     function mousedownFn(){
+        //鼠标位置
+        // const mousePos=getMousePos(event);
+        // //鼠标位减图形位
+        // subPos={
+        //     x:mousePos.x-ball.x,
+        //     y:mousePos.y-ball.y,
+        // };
+        // //设置选择状态
+        // selected=containPoint(ball,subPos);
+
+
+
+
+
         ball.nx = ball.x;
         ball.ny = ball.y;
-        let mousePos=getMousePos(event);
-        let [preClientX, preClientY]  = [mousePos.x,mousePos.y];
-        console.log(preClientX)
-    
+        const { clientX: preClientX, clientY: preClientY } = event;
+        const { x: preX, y: preY } = ball;
+        // if (ball.inPath(preClientX, preClientY)) {
+        //     ball.grab = true;
+            
+        // }
+    }
+    function mousemoveFn(){
+
+        ball.nx = ball.x;
+        ball.ny = ball.y;
+        const { clientX: preClientX, clientY: preClientY } = event;
         const { x: preX, y: preY } = ball;
         if (ball.inPath(preClientX, preClientY)) {
             document.onmousemove = () => {
-                let mousePos=getMousePos(event);
-                const [clientX, clientY]  = [mousePos.x,mousePos.y];
-                const moveX=clientX - preClientX;
-                const moveY=clientY - preClientY;
+                const { clientX, clientY } = event;
+                const changeX = clientX - preClientX;
+                const changeY = clientY - preClientY;
                
-               if(preX + moveX < ball.r){
-                    ball.nx=ball.r;
-               }else if(preX + moveX > canvas.width - ball.r){
-                    ball.nx=canvas.width - ball.r;
-               }else{
-                ball.nx = preX + moveX;
-               }
-                
-               if(preY + moveY < ball.r){
-                    ball.ny=ball.r;
-               }else if(preY + moveY > canvas.height - ball.r){
-                    ball.ny=canvas.height - ball.r;
-               }else{
-                    ball.ny=preY + moveY;
-               }            
+                switch (true) {
+                    case preX + changeX < ball.r:
+                        ball.nx = ball.r;
+                        break;
+                    case preX + changeX > canvas.width - ball.r:
+                        ball.nx = canvas.width - ball.r;
+                        break;
+                    default:
+                        ball.nx = preX + changeX;
+                }
+
+                switch (true) {
+                    case preY + changeY < ball.r:
+                        ball.ny = ball.r;
+                        break;
+                    case preY + changeY > canvas.height - ball.r:
+                        ball.ny = canvas.height - ball.r;
+                        break;
+                    default:
+                        ball.ny = preY + changeY;
+                }
             }
-            document.onmouseup = () => {               
+
+            document.onmouseup = () => {
+               
                 document.onmousemove = null;
             }
         }
