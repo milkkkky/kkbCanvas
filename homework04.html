@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>暗号：正割</title>
+    <style>
+        body{
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        const canvas=document.getElementById('canvas');
+        const [width,height]=[window.innerWidth,window.innerHeight];
+        canvas.width=width;
+        canvas.height=height;
+        const  ctx=canvas.getContext('2d');
+        //动画帧
+        let frame=null;
+
+         /*速度 vy（像素/毫秒）*/
+        let vy=1;
+        let vx = 1;
+        let bounce=1;
+
+        let t= 0;
+        // 
+        class Circle{           
+            constructor(color='#00acec'){
+                this.color = color;
+                this.x = 200;
+                this.y = 400;
+                this.r = 100;            
+            }
+            draw(ctx){
+                const {color,x,y,r} = this;
+                t++;
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(x,y,r,0,Math.PI*2);
+                ctx.fillStyle = color;
+                ctx.fill();
+                ctx.restore();
+                ctx.globalCompositeOperation='source-out';
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(x-100+t,y,r,0,Math.PI*2);
+                
+                ctx.fillStyle = color;
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+        const circle = new Circle();
+        circle.draw(ctx);
+
+        !(function render(){
+            let cancle=false;       
+        
+            //清理画布
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            //绘图           
+        
+            circle.x+=vx;
+            circle.y-=vy;
+            // console.log("y",circle.x)
+            if(circle.x>300 && circle.x<600){
+                vx *= 1;      
+            }
+            if(circle.y<=300){
+                vy *= -1;      
+            }
+            if(circle.y>400){                
+                cancle = 1;    
+            }
+            circle.draw(ctx);
+            if(cancle){
+                cancelAnimationFrame(frame);
+            }else{
+                frame=requestAnimationFrame(render);
+            }           
+        })()
+        
+    </script>
+</body>
+</html>

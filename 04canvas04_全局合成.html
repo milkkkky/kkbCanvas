@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=canva, initial-scale=1.0">
-    <title>Document</title>
-</head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全局合成</title>
+
 <body>
     <canvas id="canvas"></canvas>
     <script>
@@ -13,7 +14,17 @@
         canvas.height = window.innerHeight;
         const ctx =  canvas.getContext('2d');
 
-        
+        ctx.fillStyle='orange';
+        ctx.fillRect(100,100,200,200);
+
+        // ctx.globalCompositeOperation='source-atop';
+        ctx.globalCompositeOperation='source-in';
+
+
+        ctx.beginPath();
+        ctx.arc(300,300,100,0,Math.PI*2);
+        ctx.fillStyle = 'green';
+        ctx.fill();
     </script>
 </body>
 </html>
